@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+
+__Name__ = 'BoxBoard'
+__Comment__ = 'Create a box board'
+__Author__ = 'noxgle'
+__Version__ = '1.0'
+__Date__ = '2022-08-03'
+__License__ = 'LGPL-3.0-or-later'
+__Web__ = ''
+__Wiki__ = ''
+__Icon__ = ''
+__Help__ = ''
+__Status__ = 'Beta'
+__Requires__ = 'FreeCAD >= v0.17'
+__Communication__ = ''
+__Files__ = 'boxboard/__init__.py,boxboard/BoxBoard.py,boxboard/BoxBoard.ui'
+
+import os
+import FreeCAD as App
+
+from boxboard.BoxBoard import BoxBoard
+
+class GuiBoxBoard:
+
+    def __init__(self):
+        self.path_to_ui = os.path.join(App.getUserMacroDir(True), "boxboard/BoxBoard.ui")
+        self.f = Gui.PySideUic.loadUi(self.path_to_ui)
+        self.f.b_ok.clicked.connect(self.action)
+        self.f.show()
+
+    def action(self):
+        b_width = self.f.i_width.text()
+        b_height = self.f.i_height.text()
+        b_depth = self.f.i_depth.text()
+        b_thickness = self.f.i_thickness.text()
+        b_front = self.f.i_front.isChecked()
+        b_back = self.f.i_back.isChecked()
+        external_dim = self.f.i_external.isChecked()
+        if b_front is True:
+            b_front = '1'
+        else:
+            b_front = '0'
+
+        if b_back is True:
+            b_back = '1'
+        else:
+            b_back = '0'
+
+        if external_dim is True:
+            external_dim = '1'
+        else:
+            external_dim = '0'
+
+        BoxBoard(b_width=b_width, b_height=b_height, b_depth=b_depth, b_thickness=b_thickness, b_front=b_front,
+                 b_back=b_back, external_dim=external_dim)
+
+
+if __name__ == '__main__':
+    G=GuiBoxBoard()
